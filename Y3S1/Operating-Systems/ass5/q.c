@@ -23,7 +23,7 @@
  * Output Description: 
  *      Displays messages showing when the threads attempt to acquire the locks, 
  *      the random value generated, the updated totals, and whether the locks were released.
- *      If deadlock occurs, the threads will be stuck without any further output.
+ *      When deadlock occurs, the threads will be stuck without any further output.
  *
  * Compilation Command: gcc q.c
  * Execution Sequence: ./a.out
@@ -51,7 +51,8 @@ Thread 2: Trying to acuire lock 1...
  -----------------------------------/
  * 
  * Remarks:
- *      1. Acquire locks in the same order to prevent deadlocks.
+ *      1. Two threads were enough to demonstate Deadlock.
+ *      2. To prevent this, acquire locks in the same order in all processes.
  * 
 ***********************************************************************/
 
