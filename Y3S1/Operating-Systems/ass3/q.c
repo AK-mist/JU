@@ -1,7 +1,7 @@
 /***********************************************************************
  *
  * Name: 
- * Roll: 
+ * Roll:
  * 
  * Date:
  *
@@ -27,21 +27,37 @@
  * Output Description: Socket and Transfer details, Transfer time, Output Files comparision result
  *
  *
- * Compilation Command: gcc q.c
+ * Compilation Command: gcc q3.c
  * Execution Sequence: ./a.out <file_name>
  *
  * 
  * Socket Info: $ ss -x | (head -n 1 && grep "unix_socket.sock")
  /-----------------------------------
-Netid State Recv-Q Send-Q                                    Local Address:Port    Peer Address:Port   Process
-u_str ESTAB 0      94464                                  unix_socket.sock 1340980            * 1340979
- -----------------------------------/
+Netid  State      Recv-Q Send-Q Local Address:Port                 Peer Address:Port                
+u_str  ESTAB      95232  0      unix_socket.sock 158751492             * 158751491            
+u_str  ESTAB      0      172800 unix_socket.sock 159921672             * 159921671
+ ----------------------------------/
  *
  *
- * Sample Input: very-large-file
+ * Sample Input: very-large-file (size = 10 MB)
  * Sample Output:
  /-----------------------------------
+[+]Server is listening on unix_socket.sock
+[+]Client is ready to connect
+[+]Client Connected on <path_not_specified>
+[+]Pid-9837: Sending file
+[+]Pid-9838: Receiving file
+[+]Pid-9837: File sent
+[+]Pid-9838: File received
+[+]Pid-9837: Receiving file
+[+]Pid-9838: Sending file
+[+]Pid-9838: File sent
+[+]Pid-9837: File received
 
+[+]Time taken for double transfer: 0.064731
+
+[+]Comparing files...
+[+]Files are identical
  -----------------------------------/
 ***********************************************************************/
 
@@ -55,8 +71,6 @@ u_str ESTAB 0      94464                                  unix_socket.sock 13409
 
 #define SOCKET_PATH "unix_socket.sock"
 #define BUFFER_SIZE 1024
-#define BYTES_IN_KB 1024
-#define BYTES_IN_MB 1024 * 1024
 #define BYTE_CHECK_TRANSFER_FLAG 2
 
 void error_exit(const char*);                                   // Prints the specified error message to stderr and terminates the program
@@ -225,7 +239,7 @@ void send_file(int fd, const char *filename) {
     char buffer[BUFFER_SIZE];
     size_t bytes_read;
     long total_bytes_sent = 0;
-    long byte_checker = BYTES_IN_MB * BYTE_CHECK_TRANSFER_FLAG;
+    long byte_checker = 1024 * 1024 * BYTE_CHECK_TRANSFER_FLAG;
     int flag_counter = 0;
 
     printf("[+]Pid-%d: Sending file\n", pid);
@@ -263,7 +277,7 @@ void receive_file(int fd, const char *output_filename) {
     char buffer[BUFFER_SIZE];
     ssize_t bytes_received;
     long total_bytes_received = 0;
-    long byte_checker = BYTES_IN_MB * BYTE_CHECK_TRANSFER_FLAG;
+    long byte_checker = 1024 * 1024 * BYTE_CHECK_TRANSFER_FLAG;
     int flag_counter = 0;
 
     printf("[+]Pid-%d: Receiving file\n", pid);
