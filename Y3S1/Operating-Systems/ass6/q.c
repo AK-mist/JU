@@ -1,7 +1,7 @@
 /***********************************************************************
  *
- * Name: 
- * Roll: 
+ * Name:
+ * Roll:
  * 
  * Date:
  *
@@ -30,14 +30,32 @@
  * Output Description:
  *
  *
- * Compilation Command:
- * Execution Sequence:
+ * Compilation Command: gcc 100_6.c
+ * Execution Sequence: ./a.out
  *
  *
  * Sample Input:
  * Sample Output:
  /-----------------------------------
 
+Processor Information:
+	Vendor ID: GenuineIntel
+	CPU Model: Intel(R) Xeon(R) CPU E5-2609 v4 @ 1.70GHz
+	Cache Size: 20.00 MB
+
+Kernel Information:
+	Linux version 3.10.0-514.21.1.el7.x86_64 (mockbuild@sl7-uefisign.fnal.gov) (gcc version 4.8.5 20150623 (Red Hat 4.8.5-11) (GCC) ) #1 SMP Thu May 25 12:04:35 CDT 2017
+
+Memory Information:
+	MemTotal: 64013.00 MB
+	MemFree: 38419.93 MB
+	MemAvailable: 59885.86 MB
+	Buffers: 0.94 MB
+	Cached: 21634.56 MB
+	SwapCached: 0.00 MB
+
+System Uptime:
+	Uptime: 336 days, 3 hours, 26 minutes, 21 seconds
  -----------------------------------/
 ***********************************************************************/
 
@@ -148,7 +166,19 @@ void get_memory_info() {
             (strncmp(buffer, "Cached", 6) == 0) ||
             (strncmp(buffer, "SwapCached", 10) == 0)
             ) {
-            printf("\t%s", buffer);
+            //printf("\t%s", buffer);
+            
+            char *mem_type_start = buffer;
+            char *mem_type_end = strchr(buffer, ' ');
+            char *mem_size = strchr(buffer, ':') + 2;
+            
+            printf("\t");
+            while (mem_type_start < mem_type_end && *mem_type_start != '\0') {
+                putchar(*mem_type_start);
+                mem_type_start++;
+            }
+            int mem_size_kb = atoi(mem_size);
+            printf(" %.2f MB\n", mem_size_kb / 1024.0);
         }
     }
 
@@ -163,7 +193,7 @@ void get_uptime() {
         error_exit("Error: opening /proc/uptime");
     }
 
-    printf("System Uptime:\n");
+    printf("\nSystem Uptime:\n");
 
     if (fscanf(fd, "%lf", &uptime) == 1) {
         int days = (int)(uptime / 86400);
