@@ -1,8 +1,8 @@
 /***********************************************************************
- * Name: 
- * Roll: 
+ * Name:
+ * Roll:
  * 
- * Date: 05.08.2024
+ * Date:
  *
  * Assignment: 2B, IPC using Named Pipe (FIFO)
  *      Steps involved in this program:
@@ -23,7 +23,23 @@
  * Sample Input: very-large-file
  * Sample Output:
  /-----------------------------------
+Created processes with Pid-7834 & Pid-7835
 
+Pid-7834: waiting for reader...
+Pid-7834: Done writing
+Pid-7834: waiting for writer...
+Pid-7834: got a writer
+Pid-7834: Done reading
+Pid-7835: waiting for writer...
+Pid-7835: got a writer
+Pid-7835: Done reading
+Pid-7835: waiting for reader...
+Pid-7835: Done writing
+
+Time required for double tranfer = 4.068030 seconds
+
+Compare generated files
+Files are identical
  -----------------------------------/
 ***********************************************************************/
 
@@ -101,8 +117,7 @@ int main(int argc, char **argv) {
 
     // Parent Process
     if (proc1 != 0 && proc2 != 0) {
-        printf("Created processes with Pid-%d & Pid-%d\n", proc1, proc2);
-        printf("\nStep 1 & 2\n");
+        printf("Created processes with Pid-%d & Pid-%d\n\n", proc1, proc2);
     }
 
 
