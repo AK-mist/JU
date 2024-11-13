@@ -49,7 +49,7 @@ echo "C files copied to '$DIR_PATH/$NEW_DIR'"
 # 3. Show the list of files in your current directory.
  
 echo -e "3. List of files in the current directory"
-echo -e "\t\c"; ls ./
+echo -e "\t\c"; find . -maxdepth 1 -type f
 
 # ***********************************************************************
 # 4. Show Current working directory.
@@ -64,7 +64,7 @@ echo -e "5. Date(dd:mm:yy): \c"; date +"%d:%m:%y"
 # ***********************************************************************
 # 6. Count the number of files in your home directory.
 
-echo "6. Total number of files in '$DIR_PATH' is: $(ls -1 "$DIR_PATH" | wc -l)"
+echo "6. Total number of files in '$DIR_PATH' is: $(find $DIR_PATH -maxdepth 1 -type f | wc -l)"
 
 # ***********************************************************************
 # 7. Create a file that lists all of the .C files in your directory.
