@@ -26,14 +26,13 @@
  * Execution Sequence: ./a.out <number of pairs>
  *
  * 
- * Shared Memory Info: used 10,000,000 pairs
+ * Shared Memory Info: used 100_000 pairs
  /-----------------------------------
- $ ls /dev/shm/shared_file
--rw-r--r-- 1 user user 280000104 Nov 12 22:57 /dev/shm/shared_file
+$ ipcs -m
 
- $ df -h /dev/shm/shared_file
-Filesystem      Size  Used Avail Use% Mounted on
-tmpfs           7.8G  298M  7.5G   4% /dev/shm
+------ Shared Memory Segments --------
+key        shmid      owner      perms      bytes      nattch     status      
+0x45076e9c 196655     user       644        2800104    1
 /-----------------------------------
  * 
  *
