@@ -93,6 +93,7 @@ Each column represents the following calculations:
 
  -----------------------------------/
 ***********************************************************************/
+#define _GNU_SOURCE
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -210,7 +211,7 @@ void *compute_Th1(void *arg) {
 
         // Step 1: Compute A
         printf("Th1: Computing A for pair %d", i+1);
-        tabular_data[i].A = x + y;
+        tabular_data[i].A = x * y;
         printf(" - Done\n");
 
         // Signal Th2 to compute B and wait for Th1's turn for E
