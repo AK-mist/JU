@@ -2,15 +2,11 @@
 *.pyc
 __pycache__/
 
-# Java
-*.class
-
-# C++
-*.o
-*.out
-
 # Compiled executables
 *.exe
+*.out
+*.OUT
+*.class
 
 # IDE specific files
 .vscode/

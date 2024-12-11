@@ -26,14 +26,13 @@
  * Execution Sequence: ./a.out <number of pairs>
  *
  * 
- * Shared Memory Info: used 10,000,000 pairs
+ * Shared Memory Info: used 100_000 pairs
  /-----------------------------------
- $ ls /dev/shm/shared_file
--rw-r--r-- 1 user user 280000104 Nov 12 22:57 /dev/shm/shared_file
+$ ipcs -m
 
- $ df -h /dev/shm/shared_file
-Filesystem      Size  Used Avail Use% Mounted on
-tmpfs           7.8G  298M  7.5G   4% /dev/shm
+------ Shared Memory Segments --------
+key        shmid      owner      perms      bytes      nattch     status      
+0x45076e9c 196655     user       644        2800104    1
 /-----------------------------------
  * 
  *
@@ -93,7 +92,6 @@ Each column represents the following calculations:
 
  -----------------------------------/
 ***********************************************************************/
-#define _GNU_SOURCE
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -106,7 +104,7 @@ Each column represents the following calculations:
 #include <time.h>
 
 #define SHARED_STORAGE "shared_file"
-#define MAX_PAIRS 10000000
+#define MAX_PAIRS 200000
 #define RANDOM_QUANTITY_UPPER_BOUND 10
 #define TOTAL_TASKS 5
 
@@ -142,14 +140,15 @@ int main(int argc, char *argv[]) {
     }
 
     // Create shared memory
+    int fd = open(SHARED_STORAGE, O_CREAT | O_RDONLY, 0666);
+    key_t key = ftok(SHARED_STORAGE, 69);
     size_t shared_data_size = sizeof(Shared_Data) + sizeof(Tabular_Data) * num_pairs;
-    int shm_fd = shm_open(SHARED_STORAGE, O_CREAT | O_RDWR, 0644);
-    ftruncate(shm_fd, shared_data_size);
-    Shared_Data *shared_data = mmap(0, shared_data_size, PROT_READ | PROT_WRITE, MAP_SHARED, shm_fd, 0);
-    if (shm_fd == -1 || shared_data == MAP_FAILED) {
-        perror("Main: Creating Shared Memory");
+    int shm_id = shmget(key, shared_data_size, IPC_CREAT | 0644);
+    Shared_Data *shared_data = (Shared_Data *)shmat(shm_id, NULL, 0);
+    if (key == -1 || shm_id == -1 || shared_data == (void *)-1) {
+        perror("Shared Memory");
         exit(EXIT_FAILURE);
-    }    
+    }
 
     // Initialize shared data and mutexes/conditions
     shared_data->tabular_data = (Tabular_Data *)(shared_data + 1);
@@ -184,8 +183,9 @@ int main(int argc, char *argv[]) {
     // Cleanup
     pthread_mutex_destroy(&shared_data->mutex);
     pthread_cond_destroy(&shared_data->cond);
-    munmap(shared_data, shared_data_size);
-    shm_unlink(SHARED_STORAGE);
+    shmdt(SHARED_STORAGE);
+    shmctl(shm_id, IPC_RMID, NULL);
+    close(fd);
 
     return 0;
 }

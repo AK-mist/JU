@@ -115,7 +115,6 @@ process 'a.out' has stopped running
  * 
  *
 ***********************************************************************/
-
 #define _GNU_SOURCE
 
 #include <stdio.h>
@@ -125,15 +124,12 @@ process 'a.out' has stopped running
 #include <sys/mman.h>
 #include <time.h>
 
-#define FILE_SIZE (8L * 1024 * 1024 * 1024)
+#define FILE_SIZE (1L * 1024 * 1024)
 #define PROCESS_INTERVAL 50000
 
 void error_exit(const char*);
 
 int main() {
-    // wait for the custom script
-    usleep(3000000);
-
     int file_fd;
     char *file_name = "somewhat-big-file";
     int file_flags = O_CREAT | O_RDWR | O_TRUNC;

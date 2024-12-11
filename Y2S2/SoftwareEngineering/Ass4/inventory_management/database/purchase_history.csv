@@ -1,2 +1,0 @@
-customer_id, product_id, purchase_status, purchase_quantity, purchase_cost, date_and_time
-5, 3, Passed, 7, 700.0, 2024-03-07 15:02:21.896
