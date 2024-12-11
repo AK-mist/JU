@@ -1,7 +1,0 @@
-customer_id, customer_name, balance, number_of_successful_purchases, number_of_failed_purchases, total_spending
-1, Jack, 105, 0, 0, 0
-2, Hill, 175.0, 0, 0, 0.0
-3, Noob, 600.0, 0, 0, 0.0
-4, Jill, 0.0, 0, 0, 0.0
-5, A1, 300.0, 1, 0, 700.0
-6, jill, 52.0, 0, 0, 0.0
